@@ -1,0 +1,46 @@
+:root { color-scheme: dark; --bg: #3a3a3a; --panel: #1e1e1e; --fg: #d8d8d8; --dim: #b0b0b0; --accent: #55ffff; --hot: #ff55ff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 16px; padding: 10px 16px; background: linear-gradient(#aaaaaa, #8f8f8f); color: #1e1e1e; border-bottom: 2px solid #111; }
+h1 { margin: 0; font-size: 26px; font-style: italic; letter-spacing: -1px; }
+h1 span { color: #0000aa; text-shadow: 2px 2px 0 var(--hot); }
+header p { margin: 0; }
+main { display: flex; gap: 16px; padding: 16px; align-items: flex-start; }
+aside { flex: 0 0 280px; display: grid; gap: 12px; }
+details { padding: 12px; background: var(--panel); border: 1px solid #000; box-shadow: 3px 3px 0 #111; }
+summary { cursor: pointer; color: var(--accent); }
+details > div { display: grid; gap: 8px; margin-top: 8px; }
+h2 { display: inline; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+input, textarea, button, select { font: inherit; color: inherit; background: #111; border: 1px solid #555; padding: 6px 8px; }
+input[type=number] { width: 70px; }
+input[type=range] { padding: 0; vertical-align: middle; accent-color: var(--accent); }
+textarea { resize: vertical; }
+::placeholder { color: var(--dim); }
+button { cursor: pointer; background: #2c2c2c; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: progress; }
+label:has(input:disabled) { opacity: .6; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+small, #status { color: var(--dim); margin: 0; }
+#status { min-height: 1.4em; margin-bottom: 8px; overflow-wrap: anywhere; }
+#palette { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; }
+#palette button { position: relative; aspect-ratio: 1; padding: 0; border: 2px solid #000; }
+#palette button[aria-pressed=true] { border-color: #fff; }
+#palette button.bg::after { content: ""; position: absolute; inset: 30%; border: 2px dashed #fff; mix-blend-mode: difference; }
+#chars { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; }
+#chars button { padding: 2px 0; font-size: 16px; line-height: 1.2; }
+#chars button[aria-pressed=true] { border-color: var(--accent); color: var(--accent); }
+#stage { flex: 1; min-width: 0; }
+#frame { position: relative; display: inline-block; max-width: 100%; vertical-align: top; box-shadow: 4px 4px 0 #111; }
+canvas { display: block; max-width: 100%; image-rendering: pixelated; touch-action: none; cursor: crosshair; background: #000; }
+#frame > img, #frame::after, #cursor { position: absolute; pointer-events: none; }
+#frame > img { inset: 0; width: 100%; height: 100%; object-fit: fill; }
+#frame.grid::after { content: ""; inset: 0; background-size: calc(100% / var(--cols)) calc(100% / var(--rows));
+  background-image: linear-gradient(to right, #fff3 1px, transparent 1px), linear-gradient(to bottom, #fff3 1px, transparent 1px); }
+#cursor { border: 1px solid var(--accent); box-shadow: 0 0 0 1px #000; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+#stage.drop #frame { outline: 3px dashed var(--accent); }
+@media (min-width: 721px) { #stage { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; padding: 0 6px 6px 0; } }
+@media (max-width: 720px) { main { flex-direction: column-reverse; } aside { flex-basis: auto; width: 100%; } }
+@media (prefers-reduced-motion: reduce) { #cursor { animation: none; } }
