@@ -9,7 +9,7 @@ import { MAX_CELLS, MAX_COLS, MAX_PROMPT, MAX_ROWS, PALETTE } from './public/ans
 const PUBLIC_DIR = join(import.meta.dirname, 'public');
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 const HEADERS = {
-  'content-security-policy': "default-src 'self'; img-src 'self' blob: data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+  'content-security-policy': "default-src 'self'; img-src 'self' blob: data: https://img.shields.io; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
   'x-content-type-options': 'nosniff',
   'referrer-policy': 'no-referrer',
   'cross-origin-opener-policy': 'same-origin',

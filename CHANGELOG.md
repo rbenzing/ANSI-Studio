@@ -4,6 +4,10 @@ All notable changes to ANSI Studio are recorded here. Each release lists what wa
 
 ## [Unreleased]
 
+### Added
+
+- A GitHub stars badge at the top right of the page, linking to the repository.
+
 ### Fixed
 
 - The server now starts when a host or process manager loads `server.js` through its own wrapper, with `import()` or `require()`, instead of running it directly. Before, it either loaded without listening or failed to load, so hosts that start apps this way answered every request with 503.

@@ -5,6 +5,7 @@ header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 16px; pad
 h1 { margin: 0; font-size: 26px; font-style: italic; letter-spacing: -1px; }
 h1 span { color: #0000aa; text-shadow: 2px 2px 0 var(--hot); }
 header p { margin: 0; }
+#repo { margin-left: auto; align-self: center; line-height: 0; }
 main { display: flex; gap: 16px; padding: 16px; align-items: flex-start; }
 aside { flex: 0 0 280px; display: grid; gap: 12px; }
 details { padding: 12px; background: var(--panel); border: 1px solid #000; box-shadow: 3px 3px 0 #111; }
