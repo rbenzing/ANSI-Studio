@@ -487,8 +487,8 @@ fetch('/api/models')
   .catch(() => status('Prompt generation is unavailable right now. Drawing and images still work.'));
 
 // Panels remember being collapsed in this browser. Storage can be unavailable (private mode); panels then start open.
-document.querySelectorAll('aside details').forEach((panel, i) => {
-  const key = `${STORE}-panel-${i}`, details = /** @type {HTMLDetailsElement} */ (panel);
+document.querySelectorAll('aside details').forEach((panel) => {
+  const details = /** @type {HTMLDetailsElement} */ (panel), key = `${STORE}-panel-${details.querySelector('h2')?.textContent}`;
   try { details.open = localStorage.getItem(key) !== 'closed'; } catch { /* keep the default */ }
   details.addEventListener('toggle', () => { try { localStorage.setItem(key, details.open ? 'open' : 'closed'); } catch { /* best effort */ } });
 });

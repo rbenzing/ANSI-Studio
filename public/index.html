@@ -13,33 +13,7 @@
   <header><h1>ansi<span>studio</span></h1><p>Draw it, type it, drop an image, or describe it. Download a real .ans file.</p>
     <a id="repo" href="https://github.com/rbenzing/ANSI-Studio" target="_blank" rel="noopener"><img src="https://img.shields.io/github/stars/rbenzing/ANSI-Studio?style=social" alt="ANSI Studio on GitHub: stars" height="20"></a></header>
   <main>
-    <aside>
-      <details open>
-        <summary><h2>Describe</h2></summary>
-        <div>
-        <textarea id="prompt" rows="3" aria-label="Describe the art" placeholder="a grinning skull with neon pink eyes"></textarea>
-        <select id="model" aria-label="Model" hidden></select>
-        <label><input id="revise" type="checkbox" disabled> Revise the last picture</label>
-        <label><input id="reference" type="checkbox" disabled> Use the image as reference</label>
-        <button id="generate">Generate</button>
-      </div></details>
-      <details open>
-        <summary><h2>Image</h2></summary>
-        <div>
-        <input id="file" type="file" accept="image/*" aria-label="Image to convert">
-        <div class="row">
-          <label>Dither <select id="dither"><option value="none">Off</option><option value="diffusion" selected>Diffusion</option><option value="ordered">Ordered</option></select></label>
-          <label>Cleanup <select id="cleanup"><option value="0">Off</option><option value="1" selected>Light</option><option value="2">Strong</option></select></label>
-        </div>
-        <label>Brightness <input id="brightness" type="range" min="50" max="150" value="100"></label>
-        <label>Contrast <input id="contrast" type="range" min="50" max="200" value="100"></label>
-        <label>Saturation <input id="saturation" type="range" min="0" max="200" value="100"></label>
-        <div class="row">
-          <label><input id="trace" type="checkbox"> Tracing overlay</label>
-          <input id="opacity" type="range" min="10" max="90" value="40" aria-label="Overlay opacity">
-        </div>
-        <small>Changing a setting re-converts the image. Dither and cleanup also apply to generated art.</small>
-      </div></details>
+    <aside id="tools" aria-label="Drawing tools">
       <details open>
         <summary><h2>Draw</h2></summary>
         <div>
@@ -57,61 +31,84 @@
         <div class="row">
           <label><input id="filled" type="checkbox"> Filled shapes</label>
           <label><input id="mirror" type="checkbox"> Mirror</label>
-          <label><input id="grid" type="checkbox"> Grid</label>
         </div>
         <div id="chars" role="group" aria-label="Characters"></div>
-        <div class="row"><button id="undo">Undo</button><button id="redo">Redo</button><button id="clear">Clear</button></div>
         <small>Pixel tools paint the foreground; right-drag paints the background. Char paints the picked character; Text types it, and F1-F10 insert the first ten.</small>
       </div></details>
       <details open>
         <summary><h2>TheDraw font</h2></summary>
         <div>
-        <input id="tdf" type="file" accept=".tdf" aria-label="TheDraw font file">
+        <label class="picker">Load a .tdf font<input id="tdf" type="file" accept=".tdf"></label>
         <select id="tdf-font" aria-label="Font" hidden></select>
         <input id="tdf-text" maxlength="40" placeholder="Logo text" aria-label="Logo text">
         <button id="tdf-place">Place at text cursor</button>
       </div></details>
-      <details open>
-        <summary><h2>Size</h2></summary>
-        <div>
+    </aside>
+    <div id="stage">
+      <div class="bar" role="group" aria-label="File">
+        <label class="picker" title="Open an .ans, .asc, .diz, .nfo or .txt file">Open<input id="open" type="file" accept=".ans,.asc,.diz,.nfo,.txt"></label>
+        <input id="title" maxlength="35" placeholder="Title" aria-label="Title">
+        <input id="author" maxlength="20" placeholder="Artist" aria-label="Artist">
+        <input id="group" maxlength="20" placeholder="Group" aria-label="Group">
+        <span class="group">
+        <label title="iCE colors allow bright backgrounds. Turn off for BBS software that would make them blink."><input id="ice" type="checkbox" checked> iCE</label>
+        <button id="download" title="Download as .ans with a SAUCE record. Your work is also saved in this browser automatically.">.ans</button>
+        <button id="png" title="Download as a PNG image">.png</button>
+        <button id="utf8" title="Download UTF-8 ANSI for modern terminals">UTF-8</button>
+        <button id="share" title="Copy a link that carries the art">Share link</button>
+        </span>
+      </div>
+      <div class="bar" role="group" aria-label="Canvas">
+        <button id="undo">Undo</button><button id="redo">Redo</button><button id="clear">Clear</button>
+        <span class="spacer"></span>
+        <span class="group">
         <select id="preset" aria-label="Preset size">
-          <option value="">Custom</option>
+          <option value="">Custom size</option>
           <option value="80x25">80 x 25 DOS screen</option>
           <option value="80x50">80 x 50 VGA 50-line</option>
           <option value="80x100">80 x 100 Scroller</option>
           <option value="160x50">160 x 50 Wide</option>
           <option value="45x10">45 x 10 FILE_ID.DIZ</option>
         </select>
-        <div class="row">
-          <label>Cols <input id="cols" type="number" min="1" value="80"></label>
-          <label>Rows <input id="rows" type="number" min="1" value="25"></label>
-        </div>
-        <small>80 columns is standard. Other widths need a viewer that reads SAUCE.</small>
-      </div></details>
-      <details open>
-        <summary><h2>File</h2></summary>
-        <div>
-        <input id="open" type="file" accept=".ans,.asc,.diz,.nfo,.txt" aria-label="Open an ANSI file">
-        <input id="title" maxlength="35" placeholder="Title" aria-label="Title">
-        <input id="author" maxlength="20" placeholder="Artist" aria-label="Artist">
-        <input id="group" maxlength="20" placeholder="Group" aria-label="Group">
-        <label><input id="ice" type="checkbox" checked> iCE colors (bright backgrounds)</label>
-        <div class="row">
-          <button id="download">.ans</button>
-          <button id="png">.png</button>
-          <button id="utf8">UTF-8</button>
-          <button id="share">Share link</button>
-        </div>
-        <small>Work is saved in this browser automatically. UTF-8 output displays in modern terminals.</small>
-      </div></details>
-    </aside>
-    <div id="stage">
+        <label title="80 columns is standard. Other widths need a viewer that reads SAUCE.">Cols <input id="cols" type="number" min="1" value="80"></label>
+        <label>Rows <input id="rows" type="number" min="1" value="25"></label>
+        <label><input id="grid" type="checkbox"> Grid</label>
+        </span>
+      </div>
       <p id="status" role="status" aria-live="polite"></p>
       <div id="frame">
         <canvas id="canvas" aria-label="Artwork canvas"></canvas>
         <div id="cursor" hidden></div>
       </div>
     </div>
+    <aside id="project" aria-label="Start from a prompt or an image">
+      <details open>
+        <summary><h2>Describe</h2></summary>
+        <div>
+        <textarea id="prompt" rows="3" aria-label="Describe the art" placeholder="a grinning skull with neon pink eyes"></textarea>
+        <select id="model" aria-label="Model" hidden></select>
+        <label><input id="revise" type="checkbox" disabled> Revise the last picture</label>
+        <label><input id="reference" type="checkbox" disabled> Use the image as reference</label>
+        <button id="generate">Generate</button>
+      </div></details>
+      <details open>
+        <summary><h2>Image</h2></summary>
+        <div>
+        <label class="picker">Choose an image<input id="file" type="file" accept="image/*"></label>
+        <div class="row">
+          <label>Dither <select id="dither"><option value="none">Off</option><option value="diffusion" selected>Diffusion</option><option value="ordered">Ordered</option></select></label>
+          <label>Cleanup <select id="cleanup"><option value="0">Off</option><option value="1" selected>Light</option><option value="2">Strong</option></select></label>
+        </div>
+        <label>Brightness <input id="brightness" type="range" min="50" max="150" value="100"></label>
+        <label>Contrast <input id="contrast" type="range" min="50" max="200" value="100"></label>
+        <label>Saturation <input id="saturation" type="range" min="0" max="200" value="100"></label>
+        <div class="row">
+          <label><input id="trace" type="checkbox"> Tracing overlay</label>
+          <input id="opacity" type="range" min="10" max="90" value="40" aria-label="Overlay opacity">
+        </div>
+        <small>Changing a setting re-converts the image. Dither and cleanup also apply to generated art.</small>
+      </div></details>
+    </aside>
   </main>
 </body>
 </html>

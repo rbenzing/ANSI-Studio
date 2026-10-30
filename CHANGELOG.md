@@ -8,6 +8,12 @@ All notable changes to ANSI Studio are recorded here. Each release lists what wa
 
 - A GitHub stars badge at the top right of the page, linking to the repository.
 
+### Changed
+
+- New layout that keeps everything in view. Drawing tools are on the left and the ways to start a piece (Describe, Image) on the right. File and canvas controls sit in two toolbars above the canvas: open, title, iCE and export, then undo, size and grid. On wide screens each column scrolls on its own, and only when its content is taller than the window. The panels stack on narrower screens.
+- File pickers are plain buttons ("Open", "Choose an image", "Load a .tdf font").
+- Collapsed panels are remembered by name.
+
 ### Fixed
 
 - The server now starts when a host or process manager loads `server.js` through its own wrapper, with `import()` or `require()`, instead of running it directly. Before, it either loaded without listening or failed to load, so hosts that start apps this way answered every request with 503.

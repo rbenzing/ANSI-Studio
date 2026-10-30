@@ -6,14 +6,16 @@ h1 { margin: 0; font-size: 26px; font-style: italic; letter-spacing: -1px; }
 h1 span { color: #0000aa; text-shadow: 2px 2px 0 var(--hot); }
 header p { margin: 0; }
 #repo { margin-left: auto; align-self: center; line-height: 0; }
-main { display: flex; gap: 16px; padding: 16px; align-items: flex-start; }
-aside { flex: 0 0 280px; display: grid; gap: 12px; }
+main { display: grid; gap: 16px; padding: 16px; align-items: start; grid-template-columns: 260px minmax(0, 1fr) 260px; grid-template-areas: "tools stage project"; }
+aside { display: grid; gap: 12px; min-width: 0; }
+#tools { grid-area: tools; }
+#project { grid-area: project; }
 details { padding: 12px; background: var(--panel); border: 1px solid #000; box-shadow: 3px 3px 0 #111; }
 summary { cursor: pointer; color: var(--accent); }
-details > div { display: grid; gap: 8px; margin-top: 8px; }
+details > div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: 8px; }
 h2 { display: inline; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; }
 .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-input, textarea, button, select { font: inherit; color: inherit; background: #111; border: 1px solid #555; padding: 6px 8px; }
+input, textarea, button, select { font: inherit; color: inherit; background: #111; border: 1px solid #555; padding: 6px 8px; min-width: 0; max-width: 100%; }
 input[type=number] { width: 70px; }
 input[type=range] { padding: 0; vertical-align: middle; accent-color: var(--accent); }
 textarea { resize: vertical; }
@@ -32,7 +34,16 @@ small, #status { color: var(--dim); margin: 0; }
 #chars { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; }
 #chars button { padding: 2px 0; font-size: 16px; line-height: 1.2; }
 #chars button[aria-pressed=true] { border-color: var(--accent); color: var(--accent); }
-#stage { flex: 1; min-width: 0; }
+#stage { grid-area: stage; min-width: 0; }
+.bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 8px; }
+.bar input:not([type]) { flex: 1 1 80px; }
+.bar #title { flex: 2 1 120px; }
+.spacer { flex: 1; }
+.group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.picker { position: relative; padding: 6px 8px; text-align: center; background: #2c2c2c; border: 1px solid #555; cursor: pointer; }
+.picker:hover { border-color: var(--accent); }
+.picker:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
+.picker input { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; }
 #frame { position: relative; display: inline-block; max-width: 100%; vertical-align: top; box-shadow: 4px 4px 0 #111; }
 canvas { display: block; max-width: 100%; image-rendering: pixelated; touch-action: none; cursor: crosshair; background: #000; }
 #frame > img, #frame::after, #cursor { position: absolute; pointer-events: none; }
@@ -42,6 +53,16 @@ canvas { display: block; max-width: 100%; image-rendering: pixelated; touch-acti
 #cursor { border: 1px solid var(--accent); box-shadow: 0 0 0 1px #000; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 #stage.drop #frame { outline: 3px dashed var(--accent); }
+/* Wide: tools left, project right, canvas between; everything stays in view and each column scrolls on its own. */
 @media (min-width: 721px) { #stage { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; padding: 0 6px 6px 0; } }
-@media (max-width: 720px) { main { flex-direction: column-reverse; } aside { flex-basis: auto; width: 100%; } }
+@media (min-width: 1180px) {
+  body { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+  main { flex: 1; min-height: 0; grid-template-rows: minmax(0, 1fr); }
+  aside, #stage { max-height: 100%; overflow: auto; scrollbar-width: thin; }
+  aside { padding: 2px 6px 6px 2px; }
+}
+/* Medium: both columns stack beside the canvas. */
+@media (min-width: 721px) and (max-width: 1179px) { main { grid-template-columns: 280px minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "tools stage" "project stage"; } }
+/* Narrow: the canvas first, then the tools, then the rest. */
+@media (max-width: 720px) { main { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "tools" "project"; } }
 @media (prefers-reduced-motion: reduce) { #cursor { animation: none; } }
