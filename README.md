@@ -34,6 +34,7 @@ MODELS=local/my-model LOCAL_BASE_URL=http://localhost:8080/v1 npm start
 | `MODELS` | none (prompts off) | Comma-separated `provider/model` list offered for prompts; the first is the default. The provider is a name you choose, the text before the first slash; the rest is the model id the provider expects, which may contain slashes |
 | `<PROVIDER>_BASE_URL` | none | The provider's Chat Completions API URL, ending before `/chat/completions`, e.g. `LOCAL_BASE_URL=http://localhost:8080/v1`. `<PROVIDER>` is the provider name in upper case, with characters other than letters and digits replaced by `_`. The server refuses to start without it, except for providers with a native adapter in `ai.js` |
 | `<PROVIDER>_API_KEY` | none | The provider's API key, sent as a bearer token. Most local servers need none |
+| `<PROVIDER>_MAX_TOKENS` | none | Caps each reply's length, sent as `max_completion_tokens`, which bounds the cost of a generation. Leave it unset for servers that reject that field. Reasoning models count their thinking toward it, so allow room, e.g. `16000` |
 | `RATE_LIMIT_PER_HOUR` | `20` | Prompt generations per client IP per hour |
 | `TRUST_PROXY` | off | Set to `1` behind one reverse proxy so the limit uses `X-Forwarded-For` |
 | `PORT` | `3000` | Listen port |
@@ -59,6 +60,7 @@ npm run check   # lint, type check, tests
 
 | File | Role |
 |---|---|
+| `index.html` | The page. It lives outside `public/` so it is always served by the app with its security headers, even on hosts that serve `public/` themselves |
 | `public/ansi.js` | Palette, CP437, cells, pixel tools, image conversion, the `.ans` encoder and decoder, and UTF-8 export. Shared by browser, server and tests |
 | `public/tdf.js` | TheDraw font parser and text renderer |
 | `public/app.js` | Browser UI: VGA glyph rendering, tools, files, autosave and sharing |

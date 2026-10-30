@@ -45,6 +45,10 @@ test('serves the app with security headers, caching validators and no directory 
   assert.match(page.headers.get('content-security-policy') ?? '', /default-src 'self'/);
   assert.equal(page.headers.get('x-content-type-options'), 'nosniff');
   assert.match(await page.text(), /<canvas id="canvas"/);
+  assert.equal(page.headers.get('strict-transport-security'), 'max-age=31536000');
+  const direct = await app.request('/index.html');
+  assert.equal(await direct.text(), await (await app.request('/')).text(), 'the page by its file name is the same page');
+  assert.match(direct.headers.get('content-security-policy') ?? '', /frame-ancestors 'none'/, 'and it gets the same headers');
 
   const script = await app.request('/app.js');
   assert.match(script.headers.get('content-type') ?? '', /^text\/javascript/);

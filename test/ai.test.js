@@ -56,6 +56,9 @@ test('MODELS mistakes fail at startup with the setting to fix', () => {
   assert.throws(() => createModels({ MODELS: '/model' }), /provider\/model/);
   assert.throws(() => createModels({ MODELS: 'local/' }), /provider\/model/);
   assert.equal(createModels({ MODELS: 'studio/model', STUDIO_BASE_URL: 'http://localhost:1234/v1' }).length, 1);
+  for (const bad of ['0', '-5', '1.5', 'lots']) {
+    assert.throws(() => createModels({ MODELS: 'studio/model', STUDIO_BASE_URL: 'http://x/v1', STUDIO_MAX_TOKENS: bad }), /STUDIO_MAX_TOKENS must be a positive whole number/, bad);
+  }
 });
 
 test('SDK models send the documented request and read the reply', async () => {
@@ -141,6 +144,11 @@ test('Chat Completions models post chat completions to the provider base URL', a
   const [, second] = server.requests;
   assert.equal(second.headers.authorization, undefined, 'no key, no header');
   assert.deepEqual(second.body.messages[1], { role: 'user', content: [{ type: 'text', text: 'Draw: cat' }, { type: 'image_url', image_url: { url: PNG } }] });
+
+  const [capped] = createModels({ ...env, LOCAL_MAX_TOKENS: '16000' });
+  await capped.complete(REQUEST);
+  assert.equal(server.requests[2].body.max_completion_tokens, 16000, 'the opt-in output cap is sent');
+  assert.equal('max_completion_tokens' in first.body, false, 'no cap unless configured');
 });
 
 test('Chat Completions replies are read from string or part content, and refusals from either signal', async (t) => {

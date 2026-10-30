@@ -49,7 +49,9 @@ export function createModels(env, { anthropic } = {}) {
     const name = provider.toUpperCase().replace(/[^A-Z0-9]/g, '_');
     const baseURL = env[`${name}_BASE_URL`]?.replace(/\/$/, '');
     if (!baseURL) throw new Error(`Model "${id}" needs ${name}_BASE_URL, the provider's Chat Completions API URL (ending before /chat/completions).`);
-    return { id, complete: chatModel(baseURL, env[`${name}_API_KEY`], model) };
+    const max = env[`${name}_MAX_TOKENS`] || undefined;
+    if (max !== undefined && !/^[1-9]\d*$/.test(max)) throw new Error(`${name}_MAX_TOKENS must be a positive whole number, not "${max}".`);
+    return { id, complete: chatModel(baseURL, env[`${name}_API_KEY`], model, max ? Number(max) : undefined) };
   });
 }
 
@@ -76,14 +78,14 @@ function anthropicModel(/** @type {Pick<Anthropic, 'beta'>} */ client, /** @type
 }
 
 /** @returns {Model['complete']} */
-function chatModel(/** @type {string} */ baseURL, /** @type {string | undefined} */ apiKey, /** @type {string} */ model) {
+function chatModel(/** @type {string} */ baseURL, /** @type {string | undefined} */ apiKey, /** @type {string} */ model, /** @type {number | undefined} */ maxTokens) {
   return async ({ system, text, image, signal }) => {
     try {
-      // No max_tokens: providers disagree on its name and limits, and their defaults fit an SVG.
+      // The output cap is opt-in: servers disagree on the field, and some reject fields they do not know.
       const res = await fetch(`${baseURL}/chat/completions`, {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...(apiKey && { authorization: `Bearer ${apiKey}` }) },
-        body: JSON.stringify({ model, messages: [{ role: 'system', content: system }, { role: 'user', content: image ? [{ type: 'text', text }, { type: 'image_url', image_url: { url: image } }] : text }] }),
+        body: JSON.stringify({ model, ...(maxTokens && { max_completion_tokens: maxTokens }), messages:[{ role: 'system', content: system }, { role: 'user', content: image ? [{ type: 'text', text }, { type: 'image_url', image_url: { url: image } }] : text }] }),
         signal,
       });
       const body = await res.text();

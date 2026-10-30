@@ -13,6 +13,7 @@ const HEADERS = {
   'x-content-type-options': 'nosniff',
   'referrer-policy': 'no-referrer',
   'cross-origin-opener-policy': 'same-origin',
+  'strict-transport-security': 'max-age=31536000', // browsers ignore it over plain HTTP, so local use is unaffected
 };
 const DEADLINE_MS = 180_000; // whole generation, including streaming and SDK retries
 const WINDOW_MS = 3_600_000; // rate-limit window
@@ -38,12 +39,15 @@ const system = (/** @type {number} */ w, /** @type {number} */ h) => `You illust
 export async function createApp({ models, limit = 20, trustProxy = false }) {
   /** @type {Map<string, { type: string, body: Buffer, etag: string }>} */
   const files = new Map();
-  for (const name of await readdir(PUBLIC_DIR)) {
-    const body = await readFile(join(PUBLIC_DIR, name));
-    const type = TYPES[/** @type {keyof typeof TYPES} */ (extname(name))] ?? 'application/octet-stream';
-    files.set(`/${name}`, { type: `${type}; charset=utf-8`, body, etag: `"${createHash('sha1').update(body).digest('base64url')}"` });
-  }
-  files.set('/', /** @type {any} */ (files.get('/index.html')));
+  const add = async (/** @type {string} */ path, /** @type {string} */ file) => {
+    const body = await readFile(file);
+    const type = TYPES[/** @type {keyof typeof TYPES} */ (extname(file))] ?? 'application/octet-stream';
+    files.set(path, { type: `${type}; charset=utf-8`, body, etag: `"${createHash('sha1').update(body).digest('base64url')}"` });
+  };
+  for (const name of await readdir(PUBLIC_DIR)) await add(`/${name}`, join(PUBLIC_DIR, name));
+  // The page lives outside public/, so hosts that serve public/ directly still send it through here with HEADERS.
+  await add('/', join(import.meta.dirname, 'index.html'));
+  files.set('/index.html', /** @type {any} */ (files.get('/')));
 
   /** @type {Map<string, { n: number, reset: number }>} */
   const hits = new Map();
