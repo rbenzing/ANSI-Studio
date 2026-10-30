@@ -100,7 +100,11 @@ hard cost ceiling.
 
 ```sh
 docker build -t ansi-studio .
-docker run -p 3000:3000 -e MODELS=hosted/model-id -e HOSTED_BASE_URL=https://api.example.com/v1 -e HOSTED_API_KEY=... ansi-studio
+docker run -p 3000:3000 \
+  -e MODELS=hosted/model-id \
+  -e HOSTED_BASE_URL=https://api.example.com/v1 \
+  -e HOSTED_API_KEY=... \
+  ansi-studio
 ```
 
 The container runs as a non-root user and has a health check on `/healthz`.
