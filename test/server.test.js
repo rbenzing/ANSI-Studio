@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import http from 'node:http';
 import net from 'node:net';
 import { spawn } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { ModelError } from '../ai.js';
 import { MAX_CELLS, MAX_COLS } from '../public/ansi.js';
 import { createApp } from '../create-app.js';
@@ -273,9 +274,12 @@ test('concurrent requests cannot slip past the rate limit', async (t) => {
   assert.equal(app.calls.length, 2);
 });
 
-test('server.js starts listening even when a host wrapper imports it instead of running it', async () => {
-  const entry = JSON.stringify(new URL('../server.js', import.meta.url).href);
-  const child = spawn(process.execPath, ['--input-type=module', '-e', `await import(${entry});`], { env: { ...process.env, PORT: '0', MODELS: '' }, stdio: ['ignore', 'pipe', 'inherit'] });
+// Hosts start the entry file through their own loader, with import() or with require(); both must end up listening.
+for (const [how, loader] of /** @type {[string, string[]][]} */ ([
+  ['imports', ['--input-type=module', '-e', `await import(${JSON.stringify(new URL('../server.js', import.meta.url).href)});`]],
+  ['requires', ['-e', `require(${JSON.stringify(fileURLToPath(new URL('../server.js', import.meta.url)))});`]],
+])) test(`server.js starts listening when a host wrapper ${how} it`, async () => {
+  const child = spawn(process.execPath, loader, { env: { ...process.env, PORT: '0', MODELS: '' }, stdio: ['ignore', 'pipe', 'inherit'] });
   try {
     const listening = await new Promise((resolve, reject) => {
       let out = '';
