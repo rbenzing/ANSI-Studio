@@ -210,13 +210,13 @@ test('a malformed request target gets an error response instead of crashing the 
 });
 
 test('generate maps model outcomes to clear errors', async (t) => {
-  const busy = 'The art model is busy. Try again in a minute.', unavailable = 'Prompt generation is not available on this server.', failed = 'Generation failed. Try again.';
+  const busy = 'The art model is busy. Try again in a minute.', refused = 'The model provider refused this server\'s API key or its access to the model. The server log has the provider\'s reason.', failed = 'Generation failed. Try again.';
   const cases = [
     [() => answer({ refused: true, text: '' }), 422, 'That prompt was declined. Try describing something else.'],
     [() => answer({ text: 'I cannot draw that.' }), 502, 'No picture came back. Try again.'],
     [() => answer({ text: '<svg viewBox="0 0 1 1"><rect' }), 502, 'No picture came back. Try again.'],
     [() => { throw new ModelError('busy', '429'); }, 503, busy],
-    [() => { throw new ModelError('auth', '401'); }, 503, unavailable],
+    [() => { throw new ModelError('auth', '401'); }, 503, refused],
     [() => { throw new ModelError('failed', '500'); }, 502, failed],
     [() => { throw Object.assign(new Error('not a ModelError'), { kind: 'busy' }); }, 502, failed],
   ];

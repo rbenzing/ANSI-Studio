@@ -16,6 +16,7 @@ All notable changes to ANSI Studio are recorded here. Each release lists what wa
 
 ### Fixed
 
+- When the model provider rejects the API key or model access, the error now says so instead of reading like prompt generation is not set up.
 - The server now starts when a host or process manager loads `server.js` through its own wrapper, with `import()` or `require()`, instead of running it directly. Before, it either loaded without listening or failed to load, so hosts that start apps this way answered every request with 503.
 
 ## [0.1.0] - 2026-10-30

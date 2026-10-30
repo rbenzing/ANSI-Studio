@@ -113,7 +113,7 @@ export async function createApp({ models, limit = 20, trustProxy = false }) {
       const kind = err instanceof ModelError ? err.kind : 'failed';
       console.error(JSON.stringify({ event: 'generate_failed', model: model.id, kind, error: String(err), ms: Date.now() - now }));
       if (kind === 'busy') return send(res, 503, { error: 'The art model is busy. Try again in a minute.' });
-      if (kind === 'auth') return send(res, 503, { error: 'Prompt generation is not available on this server.' });
+      if (kind === 'auth') return send(res, 503, { error: 'The model provider refused this server\'s API key or its access to the model. The server log has the provider\'s reason.' });
       send(res, 502, { error: 'Generation failed. Try again.' });
     }
   }
