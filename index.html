@@ -20,20 +20,19 @@
         <div id="palette" role="group" aria-label="Colors"></div>
         <small>Click: foreground. Right-click or Shift-click: background.</small>
         <div class="row" role="radiogroup" aria-label="Tool">
-          <label><input type="radio" name="tool" value="pencil" checked> Pencil</label>
-          <label><input type="radio" name="tool" value="fill"> Fill</label>
-          <label><input type="radio" name="tool" value="line"> Line</label>
-          <label><input type="radio" name="tool" value="box"> Box</label>
-          <label><input type="radio" name="tool" value="ellipse"> Ellipse</label>
-          <label><input type="radio" name="tool" value="brush"> Char</label>
-          <label><input type="radio" name="tool" value="text"> Text</label>
+          <label title="Paints in the foreground color; right-drag paints the background"><input type="radio" name="tool" value="pencil" checked> Pencil</label>
+          <label title="Fills an area with the foreground color; right-click fills with the background"><input type="radio" name="tool" value="fill"> Fill</label>
+          <label title="Paints in the foreground color; right-drag paints the background"><input type="radio" name="tool" value="line"> Line</label>
+          <label title="Paints in the foreground color; right-drag paints the background"><input type="radio" name="tool" value="box"> Box</label>
+          <label title="Paints in the foreground color; right-drag paints the background"><input type="radio" name="tool" value="ellipse"> Ellipse</label>
+          <label title="Paints the picked character; right-drag erases"><input type="radio" name="tool" value="brush"> Char</label>
+          <label title="Click a cell, then type. F1-F10 insert the first ten characters below"><input type="radio" name="tool" value="text"> Text</label>
         </div>
         <div class="row">
           <label><input id="filled" type="checkbox"> Filled shapes</label>
           <label><input id="mirror" type="checkbox"> Mirror</label>
         </div>
         <div id="chars" role="group" aria-label="Characters"></div>
-        <small>Pixel tools paint the foreground; right-drag paints the background. Char paints the picked character; Text types it, and F1-F10 insert the first ten.</small>
       </div></details>
       <details open>
         <summary><h2>TheDraw font</h2></summary>
@@ -110,5 +109,9 @@
       </div></details>
     </aside>
   </main>
+  <footer>
+    <p>© 2026 ANSI Studio. All Rights Reserved.</p>
+    <p>Brought to you with ❤️ by the mad web scientist <a href="https://russellbenzing.com" target="_blank" rel="noopener">Russell Benzing</a></p>
+  </footer>
 </body>
 </html>

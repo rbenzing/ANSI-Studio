@@ -6,6 +6,9 @@ h1 { margin: 0; font-size: 26px; font-style: italic; letter-spacing: -1px; }
 h1 span { color: #0000aa; text-shadow: 2px 2px 0 var(--hot); }
 header p { margin: 0; }
 #repo { margin-left: auto; align-self: center; line-height: 0; }
+footer { padding: 0 16px 10px; text-align: center; font-size: 11px; line-height: 1.5; color: var(--dim); }
+footer p { margin: 0; }
+footer a { color: inherit; }
 main { display: grid; gap: 16px; padding: 16px; align-items: start; grid-template-columns: 260px minmax(0, 1fr) 260px; grid-template-areas: "tools stage project"; }
 aside { display: grid; gap: 12px; min-width: 0; }
 #tools { grid-area: tools; }
@@ -60,6 +63,8 @@ canvas { display: block; max-width: 100%; image-rendering: pixelated; touch-acti
   main { flex: 1; min-height: 0; grid-template-rows: minmax(0, 1fr); }
   aside, #stage { max-height: 100%; overflow: auto; scrollbar-width: thin; }
   aside { padding: 2px 6px 6px 2px; }
+  footer p { display: inline; }
+  footer p + p::before { content: " · "; }
 }
 /* Medium: both columns stack beside the canvas. */
 @media (min-width: 721px) and (max-width: 1179px) { main { grid-template-columns: 280px minmax(0, 1fr); grid-template-rows: auto 1fr; grid-template-areas: "tools stage" "project stage"; } }

@@ -7,12 +7,14 @@ All notable changes to ANSI Studio are recorded here. Each release lists what wa
 ### Added
 
 - A GitHub stars badge at the top right of the page, linking to the repository.
+- A small centered footer with the copyright and a link to the author's website.
 
 ### Changed
 
 - Optional `<PROVIDER>_MAX_TOKENS` setting caps each model reply, bounding the cost of a generation.
 - The page now always gets the security headers, including an HSTS header, even on hosts that serve static files themselves.
 - New layout that keeps everything in view. Drawing tools are on the left and the ways to start a piece (Describe, Image) on the right. File and canvas controls sit in two toolbars above the canvas: open, title, iCE and export, then undo, size and grid. On wide screens each column scrolls on its own, and only when its content is taller than the window. The panels stack on narrower screens.
+- The drawing-tool help moved into tooltips on each tool, so the tool column fits on common laptop screens.
 - File pickers are plain buttons ("Open", "Choose an image", "Load a .tdf font").
 - Collapsed panels are remembered by name.
 
