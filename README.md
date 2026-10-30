@@ -63,7 +63,8 @@ npm run check   # lint, type check, tests
 | `public/tdf.js` | TheDraw font parser and text renderer |
 | `public/app.js` | Browser UI: VGA glyph rendering, tools, files, autosave and sharing |
 | `public/vga.f16` | VGA 8x16 font, 256 glyphs of 16 bytes |
-| `server.js` | Static files, `GET /api/models`, `POST /api/generate`, rate limiting and security headers |
+| `server.js` | Entry point: reads the environment and starts the server |
+| `create-app.js` | Static files, `GET /api/models`, `POST /api/generate`, rate limiting and security headers |
 | `ai.js` | Model adapters: the Chat Completions API, plus native SDK adapters |
 | `test/` | Node test runner suites |
 

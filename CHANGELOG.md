@@ -4,6 +4,10 @@ All notable changes to ANSI Studio are recorded here. Each release lists what wa
 
 ## [Unreleased]
 
+### Fixed
+
+- The server now starts when a host or process manager loads `server.js` through its own wrapper instead of running it directly. Before, it loaded without listening, so hosts that start apps this way answered every request with 503.
+
 ## [0.1.0] - 2026-10-30
 
 First public release.

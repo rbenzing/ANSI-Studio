@@ -3,9 +3,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import net from 'node:net';
+import { spawn } from 'node:child_process';
 import { ModelError } from '../ai.js';
 import { MAX_CELLS, MAX_COLS } from '../public/ansi.js';
-import { createApp } from '../server.js';
+import { createApp } from '../create-app.js';
 
 const SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 50"><rect width="80" height="50" fill="#0000AA"/></svg>';
 const PNG = 'data:image/png;base64,iVBORw0KGgo=';
@@ -270,4 +271,23 @@ test('concurrent requests cannot slip past the rate limit', async (t) => {
   const statuses = await Promise.all(Array.from({ length: 8 }, () => app.generate({ prompt: 'cat', cols: 80, rows: 25 }).then((r) => r.status)));
   assert.deepEqual(statuses.toSorted(), [200, 200, 429, 429, 429, 429, 429, 429]);
   assert.equal(app.calls.length, 2);
+});
+
+test('server.js starts listening even when a host wrapper imports it instead of running it', async () => {
+  const entry = JSON.stringify(new URL('../server.js', import.meta.url).href);
+  const child = spawn(process.execPath, ['--input-type=module', '-e', `await import(${entry});`], { env: { ...process.env, PORT: '0', MODELS: '' }, stdio: ['ignore', 'pipe', 'inherit'] });
+  try {
+    const listening = await new Promise((resolve, reject) => {
+      let out = '';
+      child.stdout.on('data', (chunk) => {
+        out += chunk;
+        const line = out.split('\n').find((l) => l.includes('"listening"'));
+        if (line) resolve(JSON.parse(line));
+      });
+      child.on('exit', (code) => reject(new Error(`server.js exited with ${code} without listening`)));
+    });
+    assert.equal((await fetch(`http://127.0.0.1:${listening.address.port}/healthz`)).status, 200);
+  } finally {
+    child.kill();
+  }
 });

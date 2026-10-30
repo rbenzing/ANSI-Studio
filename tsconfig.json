@@ -11,5 +11,5 @@
     "types": ["node"],
     "skipLibCheck": true
   },
-  "include": ["server.js", "public/**/*.js", "test/**/*.js"]
+  "include": ["server.js", "create-app.js", "public/**/*.js", "test/**/*.js"]
 }

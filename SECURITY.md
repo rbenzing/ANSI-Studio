@@ -12,6 +12,6 @@ Please include what is affected, how to reproduce it, and the impact you expect.
 
 ## Scope
 
-In scope: the server (`server.js`, `ai.js`), the browser app in `public/`, and the Docker image. Examples include ways to spend a deployment's model quota from another site, bypass the rate or size limits, run script in the page, or crash the server or a visitor's tab with a crafted file or share link.
+In scope: the server (`server.js`, `create-app.js`, `ai.js`), the browser app in `public/`, and the Docker image. Examples include ways to spend a deployment's model quota from another site, bypass the rate or size limits, run script in the page, or crash the server or a visitor's tab with a crafted file or share link.
 
 Out of scope: the cost of normal use. Operators should set a spend limit with their model provider, as the README describes.
