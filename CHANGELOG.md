@@ -6,7 +6,7 @@ All notable changes to ANSI Studio are recorded here. Each release lists what wa
 
 ### Added
 
-- A GitHub stars badge at the top right of the page, linking to the repository.
+- A GitHub stars badge at the top right of the page, linking to the repository, and a "Hosted on" badge for the site's host.
 - A small centered footer with the copyright and a link to the author's website.
 
 ### Changed

@@ -5,7 +5,7 @@ header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 16px; pad
 h1 { margin: 0; font-size: 26px; font-style: italic; letter-spacing: -1px; }
 h1 span { color: #0000aa; text-shadow: 2px 2px 0 var(--hot); }
 header p { margin: 0; }
-#repo { margin-left: auto; align-self: center; line-height: 0; }
+#badges { margin-left: auto; align-self: center; display: flex; gap: 8px; line-height: 0; }
 footer { padding: 0 16px 10px; text-align: center; font-size: 11px; line-height: 1.5; color: var(--dim); }
 footer p { margin: 0; }
 footer a { color: inherit; }
