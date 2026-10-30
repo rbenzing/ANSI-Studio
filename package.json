@@ -1,0 +1,36 @@
+{
+  "name": "ansi-studio",
+  "version": "0.1.0",
+  "description": "Make classic 16-color .ANS art by drawing, converting an image, or describing it.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "check": "npm run lint && npm run typecheck && npm test"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.20.5",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "typescript": "^7.0.2"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbenzing/ANSI-Studio.git"
+  },
+  "homepage": "https://github.com/rbenzing/ANSI-Studio#readme",
+  "bugs": {
+    "url": "https://github.com/rbenzing/ANSI-Studio/issues"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+test
+.git
+.github
+.env
+.env.*
+*.md
+!THIRD_PARTY_NOTICES.md

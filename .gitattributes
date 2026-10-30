@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.f16 binary
+*.png binary
+*.ans binary
+*.tdf binary
